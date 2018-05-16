@@ -6,7 +6,6 @@ const exists = Promise.promisify(fs.stat);
 const loadBundle = function(cache, item, filename) {
   // add a small delay to ensure pipe has closed
   setTimeout(() => {
-    console.log('loading:', filename);
     cache[item] = require(filename).default;    
   }, 0);
 };
@@ -20,7 +19,7 @@ const fetchBundles = (path, services, suffix = '', require = false) => {
       })
       .catch(err => {
         if (err.code === 'ENOENT') {
-          const url = `${services[item]}${suffix}.js`;
+          const url = `${services[item]}${item}${suffix}.js`;
           console.log(`Fetching: ${url}`);
           // see: https://www.npmjs.com/package/node-fetch
           fetch(url)
